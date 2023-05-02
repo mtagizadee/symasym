@@ -5,7 +5,7 @@ o := symasym
 dest := ../dist
 
 main: 
-	gcc main.c symasym/symasym.c config/config.c -o ${o}.out -Wall && mv ${o}.out ${dest} && cd ${dest} && mv ${o}.out ${o}
+	gcc main.c random/random.c symasym/symasym.c config/config.c -o ${o}.out -Wall && mv ${o}.out ${dest} && cd ${dest} && mv ${o}.out ${o}
 
 clean:
 	cd ${dest} && rm -r ${o}
