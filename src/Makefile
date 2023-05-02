@@ -1,7 +1,14 @@
-o := symasym # output file 
+# output file 
+o := symasym
+
+# destination folder
+dest := ../dist
 
 main: 
-	gcc main.c symasym.c config.c -o ${o} -Wall
+	gcc main.c symasym/symasym.c config/config.c -o ${o}.out -Wall && mv ${o}.out ${dest} && cd ${dest} && mv ${o}.out ${o}
 
 clean:
-	rm -r ${o}
+	cd ${dest} && rm -r ${o}
+
+clean-all: clean 
+	cd ${dest} && rm -r *.bmp
