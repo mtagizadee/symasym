@@ -2,11 +2,13 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include "../random/random.h"
 
 int setParam(char* argv[], int *pI);
 int setParamWrapper(char* sArgument, char* sOption, char* argv[], void func (char*), int *pI, int nIncr);
 void setPossbileArgs(void);
 void init(void);
+
 void setSize(char* sSize);
 void setN(char* sN);
 void setSeed(char* sSeed);
@@ -27,9 +29,39 @@ void extractConfig(int argc, char* argv[]) {
 
 void init(void) {
   pConf = (SConfig*)malloc(sizeof(SConfig));
+  
   pConf->nSize = DEFAULT_SIZE;
+  pConf->n = DEFAULT_IMAGES_AMOUNT;
+  
+  pConf->nSeed = getRandSeed();
+  determineLineTypes(pConf->nSeed);
 
   setPossbileArgs();
+}
+
+void determineLineTypes(int nSeed) {
+  if (pConf->fTypesProvided) return;
+
+  switch (nSeed % 4) {
+    case 0: // create a horizontal asymmetric line
+      pConf->asstype = asymmetric;
+      pConf->vhtype = horizontal;
+      break;
+    case 1: // create a horizontal symmetric line
+      pConf->asstype = symmetric;
+      pConf->vhtype = horizontal;
+      break;
+    case 2: // create a vertical asymmetric line
+      pConf->asstype = asymmetric;
+      pConf->vhtype = vertical;
+      break;
+    case 3: // create a vertical symmetric line
+      pConf->asstype = symmetric;
+      pConf->vhtype = vertical;
+      break;
+  }
+
+  pConf->fTypesProvided = 0;
 }
 
 void setPossbileArgs(void) {
@@ -73,6 +105,7 @@ void setN(char* sN) {
 
 void setSeed(char* sSeed) {
   pConf->nSeed = atoi(sSeed);
+  pConf->fSeedProvided = 1;
 }
 
 void setO(char* sO) {
@@ -82,21 +115,25 @@ void setO(char* sO) {
 void setVS() {
   pConf->vhtype = vertical;
   pConf->asstype = symmetric;
+  pConf->fTypesProvided = 1;
 }
 
 void setVAS() {
   pConf->vhtype = vertical;
   pConf->asstype = asymmetric;
+  pConf->fTypesProvided = 1;
 }
 
 void setHS() {
   pConf->vhtype = horizontal;
   pConf->asstype = symmetric;
+  pConf->fTypesProvided = 1;
 }
 
 void setHAS() {
   pConf->vhtype = horizontal;
   pConf->asstype = asymmetric;
+  pConf->fTypesProvided = 1;
 }
 
 int setParam(char* argv[], int *pI) {
