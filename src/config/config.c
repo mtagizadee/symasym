@@ -106,6 +106,7 @@ void setN(char* sN) {
 void setSeed(char* sSeed) {
   pConf->nSeed = atoi(sSeed);
   pConf->fSeedProvided = 1;
+  determineLineTypes(pConf->nSeed);
 }
 
 void setO(char* sO) {

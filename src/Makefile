@@ -10,5 +10,5 @@ main:
 clean:
 	cd ${dest} && rm -r ${o}
 
-clean-all: clean 
+clean-img: 
 	cd ${dest} && rm -r *.bmp

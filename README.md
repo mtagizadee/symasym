@@ -8,4 +8,4 @@
 
 # Clean program guideline
 - [ ] Change your directory again to src folder since makefile is there.
-- [ ] If you want to delete *just output programs* then run: `make clean`. Or if you want to delete *generated images* as well then run: `make clean-all`
+- [ ] If you want to delete *just output programs* then run: `make clean`. Or if you want to delete *generated images* as well then run: `make clean-img`
