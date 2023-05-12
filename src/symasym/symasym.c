@@ -1,31 +1,9 @@
 #include <stdio.h>
-#include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 #include "symasym.h"
 #include "../config/config.h"
 #include "../random/random.h"
-
-#pragma pack(push, 1)
-typedef struct {
-    uint16_t type;
-    uint32_t size;
-    uint16_t reserved1;
-    uint16_t reserved2;
-    uint32_t offset;
-    uint32_t header_size;
-    int32_t width;
-    int32_t height;
-    uint16_t planes;
-    uint16_t bits_per_pixel;
-    uint32_t compression;
-    uint32_t image_size;
-    int32_t x_pixels_per_meter;
-    int32_t y_pixels_per_meter;
-    uint32_t total_colors;
-    uint32_t important_colors;
-} SBMPImage;
-#pragma pack(pop)
 
 unsigned char*** pppPixels;
 
