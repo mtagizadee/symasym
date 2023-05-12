@@ -21,7 +21,6 @@ typedef struct SConfig {
   int fSeedProvided;  // identifies that seed is provided by arguments or not
 } SConfig;
 
-
 void extractConfig(int argc, char* argv[]); // extracts arguments and set them to the config state
 SConfig* getConfig(void); // returns the current state of the config
 void showConfig(void); // shows the current state of the config

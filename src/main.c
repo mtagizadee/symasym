@@ -6,4 +6,7 @@ int main(int argc, char* argv[]) {
   extractConfig(argc, argv);
 
   showConfig();
+  generateImages();
+
+  return 0;
 }
