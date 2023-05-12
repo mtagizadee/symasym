@@ -25,5 +25,6 @@ void extractConfig(int argc, char* argv[]); // extracts arguments and set them t
 SConfig* getConfig(void); // returns the current state of the config
 void showConfig(void); // shows the current state of the config
 void determineLineTypes(int nSeed); // determines by the seed what are the types of line if they were not provided in arguments
+void changeSeed(int nSeed); // change seed, in order to generate each image randomly
 
 #endif

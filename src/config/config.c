@@ -109,6 +109,11 @@ void setSeed(char* sSeed) {
   determineLineTypes(pConf->nSeed);
 }
 
+void changeSeed(int nSeed) {
+  pConf->nSeed = nSeed;
+  determineLineTypes(pConf->nSeed);
+}
+
 void setO(char* sO) {
   pConf->o = sO;
 }

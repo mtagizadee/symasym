@@ -4,7 +4,9 @@
 
 int getRandSeed(void) {
   int nSeed = (int) time(NULL);
-  return nSeed;
+  int nRand = randint(10, 10000);
+
+  return nSeed + nRand;
 }
 
 void setRandSeed(int nSeed) {

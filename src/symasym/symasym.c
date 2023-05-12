@@ -4,6 +4,7 @@
 #include <string.h>
 #include "symasym.h"
 #include "../config/config.h"
+#include "../random/random.h"
 
 #pragma pack(push, 1)
 typedef struct {
@@ -32,6 +33,7 @@ void initPixels(void);
 void freePixels(void);
 void saveBMPImage(void);
 void generateOutputName(char sOut[]);
+void generatePixels(void);
 
 
 void saveBMPImage() {
@@ -72,6 +74,7 @@ void saveBMPImage() {
             fwrite(pppPixels[i][j], PIXEL_SIZE, 1, pFile); // Write the pixel data
         }
     }
+
     fwrite(pppPixels, 1, nImageSize, pFile); // Write the pixel data
     fclose(pFile);
 }
@@ -79,9 +82,18 @@ void saveBMPImage() {
 void generateImages() {
     SConfig* pConf = getConfig();
     
-    
+    // generate n images 
     for (int i = 0; i < pConf->n; i++) {
+        
+        if (i != 0 && !pConf->fSeedProvided) { // in order to prevent all images bee the same
+            int nNewSeed = getRandSeed();
+            
+            setRandSeed(nNewSeed); // change the rand see to prevent random repetitions
+            changeSeed(nNewSeed); // change the image seed
+        }
+
         initPixels();
+        generatePixels();
         saveBMPImage();
         freePixels();
     }
@@ -115,20 +127,21 @@ void freePixels() {
 }
 
 void generatePixels() {
-
+    SConfig* pConf = getConfig();
 }
 
 void generateOutputName(char sOut[]) {
     SConfig* pConf = getConfig();
     if (pConf->o != NULL) strcpy(sOut, pConf->o);
     else {
+        char* sRes = malloc(2 * sizeof(char*));
         switch (pConf->asstype)
         {
             case asymmetric: 
-                strcat(sOut, "a");
+                sRes[0] = 'a';
                 break;
             case symmetric: 
-                strcat(sOut, "s"); 
+                sRes[0] = 's';
                 break;
             default: 
                 break;
@@ -137,14 +150,16 @@ void generateOutputName(char sOut[]) {
         switch (pConf->vhtype)
         {
             case vertical: 
-                strcat(sOut, "v");
+                sRes[1] = 'v';
                 break;
             case horizontal: 
-                strcat(sOut, "h");
+                sRes[1] = 'h';
                 break;
             default: 
                 break;
         }
+        
+        strcpy(sOut, sRes);
     }
 
     strcat(sOut, ".bmp");
