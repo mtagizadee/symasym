@@ -26,11 +26,13 @@ typedef struct {
 } SBMPImage;
 #pragma pack(pop)
 
+unsigned char*** pppPixels;
 
-
-void initPixels(unsigned char cPixels[][MAX_IMAGE_SIZE][PIXEL_SIZE]);
-void saveBMPImage();
+void initPixels(void);
+void freePixels(void);
+void saveBMPImage(void);
 void generateOutputName(char sOut[]);
+
 
 void saveBMPImage() {
     SConfig* pConf = getConfig();
@@ -64,46 +66,55 @@ void saveBMPImage() {
         return;
     }
 
-    int nSize = pConf->nSize;
-    unsigned char cPixels[pConf->nSize][pConf->nSize][PIXEL_SIZE];
-    for (int i = 0; i < nSize; i++) {
-      for (int j = 0; j < nSize; j++) {
-          cPixels[i][j][0] = WHITE;
-          cPixels[i][j][1] = WHITE;     
-          cPixels[i][j][2] = WHITE; 
-      }
-    }
-    
     fwrite(&bmpHeader, sizeof(SBMPImage), 1, pFile); // Write the BMP header
-    fwrite(cPixels, 1, nImageSize, pFile); // Write the pixel data
+    for (int i = 0; i < pConf->nSize; i++) {
+        for (int j = 0; j < pConf->nSize; j++) {
+            fwrite(pppPixels[i][j], PIXEL_SIZE, 1, pFile); // Write the pixel data
+        }
+    }
+    fwrite(pppPixels, 1, nImageSize, pFile); // Write the pixel data
     fclose(pFile);
 }
 
 void generateImages() {
     SConfig* pConf = getConfig();
-    printf("%s\n",pConf->o);
     
-    // unsigned char cPixels[pConf->nSize][pConf->nSize][PIXEL_SIZE];
-    // initPixels(cPixels, pConf);
-    saveBMPImage(pConf);
-
-    printf("White BMP image generated successfully.\n");
+    
+    for (int i = 0; i < pConf->n; i++) {
+        initPixels();
+        saveBMPImage();
+        freePixels();
+    }
 }
 
-void initPixels(unsigned char cPixels[][MAX_IMAGE_SIZE][PIXEL_SIZE]) {
-    SConfig* pConf = getConfig();
-    // At the beginning BMP image should be fully white and empty
-    int nSize = pConf->nSize;
+void initPixels() {
+    int nSize = getConfig()->nSize;
+
+    // dynamically allocate memory of pixels array
+    pppPixels = malloc(nSize * sizeof(unsigned char**));
     for (int i = 0; i < nSize; i++) {
+        pppPixels[i] = malloc(nSize * sizeof(unsigned char*));
+
         for (int j = 0; j < nSize; j++) {
-            cPixels[i][j][0] = WHITE;
-            cPixels[i][j][1] = WHITE;     
-            cPixels[i][j][2] = WHITE; 
+            pppPixels[i][j] = malloc(PIXEL_SIZE * sizeof(unsigned char));    
+            for (int k = 0; k < PIXEL_SIZE; k++) {
+                pppPixels[i][j][k] = WHITE; // At the beginning BMP image should be fully white and empty
+            }
         }
     }
 }
 
-void generatePixels(unsigned char cPixels[][MAX_IMAGE_SIZE][PIXEL_SIZE], SConfig* pConf) {
+void freePixels() {
+    int nSize = getConfig()->nSize;
+    
+    for (int i = 0; i < nSize; i++) {
+        for (int j = 0; j < nSize; j++) free(pppPixels[i][j]);
+        free(pppPixels[i]);
+    }
+    free(pppPixels);
+}
+
+void generatePixels() {
 
 }
 
