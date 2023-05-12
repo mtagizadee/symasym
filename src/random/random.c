@@ -3,10 +3,9 @@
 #include "random.h"
 
 int getRandSeed(void) {
-  int nSeed = (int) time(NULL);
-  int nRand = randint(10, 10000);
+  int nSeed = (int) time(NULL), nRand = randint(10, 1000), nRand2 = randint(10, 1000);
 
-  return nSeed + nRand;
+  return (nSeed / nRand) + nRand2;
 }
 
 void setRandSeed(int nSeed) {

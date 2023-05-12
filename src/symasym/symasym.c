@@ -12,7 +12,7 @@ void freePixels(void);
 void saveBMPImage(void);
 void generateOutputName(char sOut[]);
 void generatePixels(void);
-
+void insertPixel(int x, int y, int nColor /* either WHITE or BLACK*/); 
 
 void saveBMPImage() {
     SConfig* pConf = getConfig();
@@ -87,10 +87,14 @@ void initPixels() {
 
         for (int j = 0; j < nSize; j++) {
             pppPixels[i][j] = malloc(PIXEL_SIZE * sizeof(unsigned char));    
-            for (int k = 0; k < PIXEL_SIZE; k++) {
-                pppPixels[i][j][k] = WHITE; // At the beginning BMP image should be fully white and empty
-            }
+            insertPixel(j, i, WHITE); // At the beginning BMP image should be fully white and empty
         }
+    }
+}
+
+void insertPixel(int x, int y, int nColor) {
+    for (int k = 0; k < PIXEL_SIZE; k++) {
+        pppPixels[y][x][k] = nColor;
     }
 }
 
@@ -137,6 +141,9 @@ void generateOutputName(char sOut[]) {
                 break;
         }
         
+        char sSeed[MAX_FILENAME_SIZE];
+        sprintf(sSeed, "%d", pConf->nSeed);
+        strcat(sRes, sSeed);
         strcpy(sOut, sRes);
     }
 
