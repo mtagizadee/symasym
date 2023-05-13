@@ -100,7 +100,7 @@ void insertPixel(int x, int y, int nColor) {
 }
 
 void drawLine(int x, int y, int nColor, int fIsVertical) {
-    for (int i = 0; i < THICKNESS; i++) {   
+    for (int i = 0; i < THICKNESS; i++) { // respec the thinkness of the line  
         int iCol = fIsVertical? x + i : x;
         int iRow = fIsVertical? y : y + i;
         insertPixel(iCol, iRow, BLACK);
@@ -126,23 +126,24 @@ void generatePixels() {
 
     int fIsVertical = pConf->vhtype == vertical;
     int fIsAssym = pConf->asstype == asymmetric;
-    int nEnd = fIsAssym? nSize : nSize / 2;
+    int nEnd = fIsAssym? nSize : nSize / 2; // if the image is symmetric then we need to go only to the middle of the frame
     for (int i = 0; i < nEnd; i++) {
-        int nError = 0;
-        if (i != 0) nError = randint(-THICKNESS, THICKNESS);
+        int nNext = 0;
+        if (i != 0) nNext = randint(-THICKNESS, THICKNESS);
         
         // identify positions
         int iRow = fIsVertical? i : iStartPosition;
         int iCol = fIsVertical? iStartPosition : i;
 
-        if (!fIsAssym) {
+        if (!fIsAssym) { // if the image is symmetric then we should draw line from the both sides at the same time
             if (fIsVertical) drawLine(iCol, nSize - i - 1, BLACK, fIsVertical);
             else drawLine(nSize - i - 1, iRow, BLACK, fIsVertical);
         }
         
         drawLine(iCol, iRow, BLACK, fIsVertical);
-        iStartPosition += nError;
+        iStartPosition += nNext;
         
+        // adjust the line so it will be only inside the frame
         if (iStartPosition + THICKNESS > nSize) iStartPosition -= THICKNESS;
         if (iStartPosition < 0) iStartPosition += THICKNESS;
     }   
@@ -177,9 +178,11 @@ void generateOutputName(char sOut[]) {
                 break;
         }
         
+        
         char sSeed[MAX_FILENAME_SIZE];
-        sprintf(sSeed, "%d", pConf->nSeed);
-        strcat(sRes, sSeed);
+        sprintf(sSeed, "%d", pConf->nSeed); // convert seed to string 
+        strcat(sRes, sSeed); // add seed to the end of the file name
+
         strcpy(sOut, sRes);
     }
 
