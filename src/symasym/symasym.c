@@ -110,6 +110,28 @@ void freePixels() {
 
 void generatePixels() {
     SConfig* pConf = getConfig();
+    
+    // i stands for the index
+    int nSize = pConf->nSize;
+    int iStartPosition = (pConf->nSeed % (nSize - THICKNESS)); // starting position will be between 0a and nSize - 4, including thickness
+
+    int fIsVertical = pConf->vhtype == vertical;
+    for (int i = 0; i < nSize; i++) {
+        int iRow = fIsVertical? i : iStartPosition;
+        int iCol = fIsVertical? iStartPosition : i;
+
+        insertPixel(iCol, iRow, BLACK);
+        
+        /*
+          * * * * * * * * * * * *
+          * * * * * * * * * * * *
+          * * * * * * * * * * * *
+          * * * * * * * * * * * *
+          * * * * * * * * * * * *
+          * * * * * * * * * * * *
+          * * * * * * * * * * * *
+        */
+    }   
 }
 
 void generateOutputName(char sOut[]) {

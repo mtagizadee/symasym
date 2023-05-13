@@ -4,6 +4,7 @@
 #include <stdint.h>
 
 #define PIXEL_SIZE 3 // each pixel contain 3 codes: RGB
+#define THICKNESS 3 // line thickness should be 3 pixels
 #define MAX_FILENAME_SIZE 40
 
 #define WHITE 255

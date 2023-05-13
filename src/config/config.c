@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <time.h>
 #include "../random/random.h"
 
 int setParam(char* argv[], int *pI);
@@ -33,6 +34,7 @@ void init(void) {
   pConf->nSize = DEFAULT_SIZE;
   pConf->n = DEFAULT_IMAGES_AMOUNT;
   
+  setRandSeed((int) time(NULL));
   pConf->nSeed = getRandSeed();
   determineLineTypes(pConf->nSeed);
 
