@@ -13,6 +13,7 @@ void saveBMPImage(void);
 void generateOutputName(char sOut[]);
 void generatePixels(void);
 void insertPixel(int x, int y, int nColor /* either WHITE or BLACK*/); 
+void drawLine(int x, int y, int nColor, int fIsVertical);
 
 void saveBMPImage() {
     SConfig* pConf = getConfig();
@@ -98,6 +99,14 @@ void insertPixel(int x, int y, int nColor) {
     }
 }
 
+void drawLine(int x, int y, int nColor, int fIsVertical) {
+    for (int i = 0; i < THICKNESS; i++) {   
+        int iCol = fIsVertical? x + i : x;
+        int iRow = fIsVertical? y : y + i;
+        insertPixel(iCol, iRow, BLACK);
+    }
+}
+
 void freePixels() {
     int nSize = getConfig()->nSize;
     
@@ -113,24 +122,29 @@ void generatePixels() {
     
     // i stands for the index
     int nSize = pConf->nSize;
-    int iStartPosition = (pConf->nSeed % (nSize - THICKNESS)); // starting position will be between 0a and nSize - 4, including thickness
+    int iStartPosition = (pConf->nSeed % (nSize - THICKNESS + 1)); // starting position will be between 0a and nSize - 4, including thickness
 
     int fIsVertical = pConf->vhtype == vertical;
-    for (int i = 0; i < nSize; i++) {
+    int fIsAssym = pConf->asstype == asymmetric;
+    int nEnd = fIsAssym? nSize : nSize / 2;
+    for (int i = 0; i < nEnd; i++) {
+        int nError = 0;
+        if (i != 0) nError = randint(-THICKNESS, THICKNESS);
+        
+        // identify positions
         int iRow = fIsVertical? i : iStartPosition;
         int iCol = fIsVertical? iStartPosition : i;
 
-        insertPixel(iCol, iRow, BLACK);
+        if (!fIsAssym) {
+            if (fIsVertical) drawLine(iCol, nSize - i - 1, BLACK, fIsVertical);
+            else drawLine(nSize - i - 1, iRow, BLACK, fIsVertical);
+        }
         
-        /*
-          * * * * * * * * * * * *
-          * * * * * * * * * * * *
-          * * * * * * * * * * * *
-          * * * * * * * * * * * *
-          * * * * * * * * * * * *
-          * * * * * * * * * * * *
-          * * * * * * * * * * * *
-        */
+        drawLine(iCol, iRow, BLACK, fIsVertical);
+        iStartPosition += nError;
+        
+        if (iStartPosition + THICKNESS > nSize) iStartPosition -= THICKNESS;
+        if (iStartPosition < 0) iStartPosition += THICKNESS;
     }   
 }
 

@@ -27,7 +27,7 @@ typedef struct {
     int32_t x_pixels_per_meter;
     int32_t y_pixels_per_meter;
     uint32_t total_colors;
-    uint32_t important_colors;
+    uint32_t important_colors;    
 } SBMPImage;
 #pragma pack(pop)
 
