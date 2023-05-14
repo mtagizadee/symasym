@@ -5,7 +5,7 @@
 #include "../config/config.h"
 #include "../random/random.h"
 
-unsigned char*** pppPixels;
+uint8_t*** pppPixels; // pixels of the image, represents what is on the image
 
 void initPixels(void);
 void freePixels(void);
