@@ -17,7 +17,11 @@ void drawLine(int x, int y, int nColor, int fIsVertical);
 
 void saveBMPImage() {
     SConfig* pConf = getConfig();
-    int nImageSize = pConf->nSize * pConf->nSize * PIXEL_SIZE;
+
+    int nRowSize = pConf->nSize * PIXEL_SIZE;
+    int nPaddingSize = (PADDING_IDENTIFIER - (nRowSize % PADDING_IDENTIFIER)) % PADDING_IDENTIFIER; // Calculate padding size with respect to 4-type image
+
+    int nImageSize = (nRowSize + nPaddingSize) * pConf->nSize;
 
     SBMPImage bmpHeader = {
         .type = 0x4D42,             // BM
@@ -52,9 +56,13 @@ void saveBMPImage() {
         for (int j = 0; j < pConf->nSize; j++) {
             fwrite(pppPixels[i][j], PIXEL_SIZE, 1, pFile); // Write the pixel data
         }
+
+        // Add padding bytes
+        for (int p = 0; p < nPaddingSize; p++) {
+            fputc(0, pFile);
+        }
     }
 
-    fwrite(pppPixels, 1, nImageSize, pFile); // Write the pixel data
     fclose(pFile);
 }
 

@@ -6,6 +6,7 @@
 #define PIXEL_SIZE 3 // each pixel contain 3 codes: RGB
 #define THICKNESS 3 // line thickness should be 3 pixels
 #define MAX_FILENAME_SIZE 40
+#define PADDING_IDENTIFIER 4 // identifies the padding, 4 because we have 4-type image
 
 #define WHITE 255
 #define BLACK 0 
