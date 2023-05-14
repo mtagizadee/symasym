@@ -159,40 +159,38 @@ void generatePixels() {
 
 void generateOutputName(char sOut[]) {
     SConfig* pConf = getConfig();
-    if (pConf->o != NULL) strcpy(sOut, pConf->o);
-    else {
-        char* sRes = malloc(2 * sizeof(char*));
-        switch (pConf->asstype)
-        {
-            case asymmetric: 
-                sRes[0] = 'a';
-                break;
-            case symmetric: 
-                sRes[0] = 's';
-                break;
-            default: 
-                break;
-        }
+    strcpy(sOut, pConf->o != NULL? pConf->o : "");
+    char* sRes = malloc(2 * sizeof(char*));
 
-        switch (pConf->vhtype)
-        {
-            case vertical: 
-                sRes[1] = 'v';
-                break;
-            case horizontal: 
-                sRes[1] = 'h';
-                break;
-            default: 
-                break;
-        }
-        
-        
-        char sSeed[MAX_FILENAME_SIZE];
-        sprintf(sSeed, "%d", pConf->nSeed); // convert seed to string 
-        strcat(sRes, sSeed); // add seed to the end of the file name
-
-        strcpy(sOut, sRes);
+    switch (pConf->vhtype)
+    {
+        case vertical: 
+            sRes[0] = 'v';
+            break;
+        case horizontal: 
+            sRes[0] = 'h';
+            break;
+        default: 
+            break;
     }
 
+    switch (pConf->asstype)
+    {
+        case asymmetric: 
+            sRes[1] = 'a';
+            break;
+        case symmetric: 
+            sRes[1] = 's';
+            break;
+        default: 
+            break;
+    }
+        
+        
+    char sSeed[MAX_FILENAME_SIZE];
+    sprintf(sSeed, "%d", pConf->nSeed); // convert seed to string 
+    strcat(sRes, sSeed); // add seed to the end of the file name
+
+    strcat(sOut, sRes);
     strcat(sOut, ".bmp");
 }
