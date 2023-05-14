@@ -5,7 +5,7 @@
 int getRandSeed(void) {
   int nSeed = (int) time(NULL), nRand = randint(10, 1000), nRand2 = randint(10, 1000);
 
-  return (nSeed / nRand) + nRand2;
+  return (nSeed / nRand) + nRand2; // in order to make the seed distinct even if they are generated within the same second
 }
 
 void setRandSeed(int nSeed) {
