@@ -3,10 +3,10 @@
 #include "symasym/symasym.h"
 
 int main(int argc, char* argv[]) {
-  extractConfig(argc, argv);
+  extractConfig(argc, argv); // extract the config from the command line
 
   showConfig();
-  generateImages();
+  generateImages(); // generate all required images
 
   return 0;
 }
