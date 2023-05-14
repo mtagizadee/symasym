@@ -159,7 +159,7 @@ void generatePixels() {
 
 void generateOutputName(char sOut[]) {
     SConfig* pConf = getConfig();
-    strcpy(sOut, pConf->o != NULL? pConf->o : "");
+    strcpy(sOut, pConf->o != NULL? pConf->o : ""); // add output name provided in args if it exists
     char* sRes = malloc(2 * sizeof(char*));
 
     switch (pConf->vhtype)
@@ -191,6 +191,6 @@ void generateOutputName(char sOut[]) {
     sprintf(sSeed, "%d", pConf->nSeed); // convert seed to string 
     strcat(sRes, sSeed); // add seed to the end of the file name
 
-    strcat(sOut, sRes);
+    strcat(sOut, sRes); // generate the output name
     strcat(sOut, ".bmp");
 }
