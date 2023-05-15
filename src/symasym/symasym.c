@@ -134,7 +134,9 @@ void generatePixels() {
 
     int fIsVertical = pConf->vhtype == vertical;
     int fIsAssym = pConf->asstype == asymmetric;
+    
     int nEnd = fIsAssym? nSize : nSize / 2; // if the image is symmetric then we need to go only to the middle of the frame
+    if (nSize % 2 != 0 && !fIsAssym) nEnd++; // if the size is odd and we need to generate the symmetric image then we should increment end condition
     for (int i = 0; i < nEnd; i++) {
         int nNext = 0;
         if (i != 0) nNext = randint(-THICKNESS, THICKNESS);
